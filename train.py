@@ -25,10 +25,10 @@ dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
 
 
 model = VQAModel().cuda()
-optimizer = Adam(model.parameters(), lr=1e-4)
+optimizer = Adam(model.parameters(), lr=1e-5)
 criterion = CrossEntropyLoss()
 
-for epoch in range(10):
+for epoch in range(30):
     model.train()
     for image, input_ids, attn_mask, labels in dataloader:
         image = image.to(device)
