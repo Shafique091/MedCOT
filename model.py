@@ -25,9 +25,9 @@ class MoEDecoder(nn.Module):
 class VQAModel(nn.Module):
     def __init__(self):
         super().__init__()
-        self.vision_encoder = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
+        self.vision_encoder = ViTModel.from_pretrained("ucl-med/medclip-vit-base-patch16")
         self.text_encoder = T5EncoderModel.from_pretrained("google/flan-t5-base")
-        self.cross_attention = nn.MultiheadAttention(embed_dim=768, num_heads=8, batch_first=True)
+        self.cross_attention = nn.MultiheadAttention(embed_dim=768, num_heads=4, batch_first=True)
         self.moe_decoder = MoEDecoder(768)
         self.classifier = nn.Linear(512, 1000)  # 1000 = vocab size or number of possible answers
 
