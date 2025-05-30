@@ -11,7 +11,7 @@ This repository is being maintaned for reasearch on the **MedCoT** model as desc
 ## --------------------------------------
 Model 1 Notebook: Contains training and testing of presented Model 1 in PPT (BERT+ViT) 
 
- Rest Train-Testing using modules
+Rest (Model 2 and3): Train-Testing using python modules
 ## ----------------------------------------------
 ## Features
 
