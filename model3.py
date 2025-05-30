@@ -5,9 +5,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers import T5ForConditionalGeneration, T5EncoderModel, AutoModel
 
-##############################
-# Cross-Attention Block
-##############################
 
 class CrossAttentionBlock(nn.Module):
     def __init__(self, hidden_dim, num_heads=8):
@@ -21,11 +18,6 @@ class CrossAttentionBlock(nn.Module):
         attn_output, attn_weights = self.attn(x, x, x)
         out = self.norm(x + attn_output)
         return out, attn_weights
-
-
-##############################
-# Mixture of Experts Module
-##############################
 
 class Expert(nn.Module):
     def __init__(self, hidden_dim):
@@ -64,9 +56,7 @@ class MixtureOfExperts(nn.Module):
         return aggregated, gate_scores  
 
 
-##############################
-# MedCoT Model
-##############################
+
 
 class MedCoTModel(nn.Module):
     def __init__(
@@ -97,39 +87,30 @@ class MedCoTModel(nn.Module):
         self.t5 = T5ForConditionalGeneration.from_pretrained(t5_model_name)
 
     def forward(self, images, input_ids, attention_mask, labels=None):
-        """
-          images: raw image tensor (B, C, H, W) for Med-ViT
-          input_ids: tokenized input text [B, seq_len]
-          attention_mask: attention mask for text [B, seq_len]
-          labels: tokenized labels for generation (optional) [B, target_seq_len]
-        """
-        # ----- Extract Text Embeddings via FLAN-T5 Encoder -----
+      
+    
         text_outputs = self.text_encoder(input_ids=input_ids, attention_mask=attention_mask)
         txt_emb = text_outputs.last_hidden_state  
         txt_emb = self.txt_proj(txt_emb) 
 
-        # ----- Extract Image Embeddings via Med-ViT -----
         img_outputs = self.image_encoder(images)
      
         img_cls = img_outputs.last_hidden_state[:, 0, :]  
         img_emb = self.img_proj(img_cls).unsqueeze(1)  
 
-        # ----- Fusion: Concatenate Image and Text Embeddings -----
      
         fusion_input = torch.cat([img_emb, txt_emb], dim=1)  # [B, 1 + seq_len, hidden_dim]
-        
-        # Apply cross-attention over the concatenated tokens.
+   
         fused_out, attn_weights = self.cross_attn(fusion_input)
      
         fused_vector = fused_out[:, 0, :] 
 
-        # ----- Mixture of Experts on the Fused Representation -----
+     
         moe_out, gating_scores = self.moe(fused_vector) 
 
-        # ----- Project to T5 Input Embedding Space -----
         prefix_embed = self.project_to_t5(moe_out).unsqueeze(1)  
 
-        # ----- T5 Decoder for Answer Generation -----
+      
  
         encoder_outputs = self.t5.encoder(
             input_ids=input_ids,
