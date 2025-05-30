@@ -11,7 +11,7 @@ class Expert(nn.Module):
         return self.fc(x)
 
 class MoEDecoder(nn.Module):
-    def __init__(self, hidden_dim, num_experts=4, output_dim=512):
+    def __init__(self, hidden_dim, num_experts=3, output_dim=512):
         super().__init__()
         self.experts = nn.ModuleList([Expert(hidden_dim, output_dim) for _ in range(num_experts)])
         self.gate = nn.Linear(hidden_dim, num_experts)
