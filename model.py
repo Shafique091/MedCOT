@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from transformers import ViTModel, T5EncoderModel, AutoTokenizer
+from transformers import ViTModel, T5EncoderModel, AutoTokenizer #ViT
 
 class Expert(nn.Module):
     def __init__(self, dim, output_dim):
@@ -29,7 +29,7 @@ class VQAModel(nn.Module):
         self.text_encoder = T5EncoderModel.from_pretrained("google/flan-t5-base")
         self.cross_attention = nn.MultiheadAttention(embed_dim=768, num_heads=4, batch_first=True)
         self.moe_decoder = MoEDecoder(768)
-        self.classifier = nn.Linear(512, 1000)  # 1000 = vocab size or number of possible answers
+        self.classifier = nn.Linear(512, 1000)  
 
     def forward(self, image, question_input_ids, question_attention_mask):
         vis_feat = self.vision_encoder(pixel_values=image).last_hidden_state[:, 0]  # CLS token
