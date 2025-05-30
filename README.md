@@ -1,9 +1,18 @@
+
+
+
 # MedCoT: Medical Visual Question Answering with Mixture of Experts and Flan-T5
 
 This repository is being maintaned for reasearch on the **MedCoT** model as described in the [MedCoT paper](https://github.com/JXLiu-AI/MedCoT). MedCoT takes a medical image and a question as input, fuses the information using a cross-attention network and a Mixture of Experts model, and generates answers using a Flan-T5 generative decoder. Additionaly saliency map is also extracted for better model explainablity, future work includes to fuse the explainability method to train the attention network based on the saliency map. 
 
 ---
 
+
+## --------------------------------------
+Model 1 Notebook: Contains training and testing of presented Model 1 in PPT (BERT+ViT) 
+
+ Rest Train-Testing using modules
+## ----------------------------------------------
 ## Features
 
 - Image feature extraction using Med-ViT  (Freezed) 
@@ -71,3 +80,5 @@ Flan-T5 Decoder(Freezed): Generates textual answer.
 
 ### Explainability: (Attention maps, gating logs)(Not Included), gradient-based saliency(Included in the Model 1 Notebook file).
 ### 
+
+
