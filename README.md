@@ -48,8 +48,7 @@ Trains the MedCoT model.
 Saves model checkpoints.
 
 ## Evaluation
-python test.py
-Loads VQA-RAD dataset.
+
 
 Loads trained model checkpoint.
 
